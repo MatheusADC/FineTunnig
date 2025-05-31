@@ -10,3 +10,24 @@ datasets.remove_columns(['hatespeech_G1', 'annotator_G1', 'hatespeech_G2', 'anno
 datasets = datasets.train_test_split(test_size=0.2)
 
 print(datasets[0])
+
+datasets['train']['text']
+
+# Removendo o \n
+def removeN(example):
+    example['text'] = example['text'].replace("\n", " ")
+    return example
+
+datasets = datasets.map(removeN)
+
+# label 0 -> No Hate Speech
+# label 1 -> Hate Speech
+def labelChange(example):
+    example['label_text'] = 'No Hate Speech' if example['label']==0 else 'Hate Speech'
+    return example
+
+datasets = datasets.map(labelChange)
+
+datasets = datasets.remove_columns(['label'])
+
+print(datasets['train'][0])
