@@ -31,3 +31,18 @@ datasets = datasets.map(labelChange)
 datasets = datasets.remove_columns(['label'])
 
 print(datasets['train'][0])
+
+# Construção do Objeto para OpenAI
+def dataset_to_jsonl(dataset, file_name):
+    with open(file_name, 'w', encoding='utf-8') as f:
+        for example in dataset:
+            json_obj = {"messages": [
+                {"role": "system","content": "Seu trabalho é classificar os comentários do usuário em Hate Speech e No Hate Speech."},
+                {"role": "user","content": example['text']},
+                {"role": "assistant","content": example['label_text']}
+            ]}
+            f.write(json.dumps(json_obj, ensure_ascii=False)+ '\n')
+
+dataset_to_jsonl(datasets['train'], 'train.jsonl')
+
+dataset_to_jsonl(datasets['test'], 'validation.jsonl')
