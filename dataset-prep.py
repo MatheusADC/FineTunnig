@@ -50,3 +50,21 @@ dataset_to_jsonl(datasets['train'], 'train.jsonl')
 dataset_to_jsonl(datasets['test'], 'validation.jsonl')
 
 os.environ['OPENAI_API_KEY'] = "sua_chave_aqui"
+
+client = OpenAI()
+
+client.files.create(
+    file=open("train.jsonl", "rb"),
+    purpose="fine-tune"
+)
+
+client.files.create(
+    file=open("validation.jsonl", "rb"),
+    purpose="fine-tune"
+)
+
+client.fine_tuning.jobs.create(
+    training_file='id_retornado_pelo_train_comeca_com_file-',
+    validation_file='id_retornado_pelo_validation_comeca_com_file-',
+    model='gpt-3.5-turbo-0125'
+)
