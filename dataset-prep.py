@@ -1,4 +1,6 @@
+import os
 import json
+from openai import OpenAI
 from datasets import load_dataset
 
 datasets = load_dataset('hate-speech-portuguese/hate_speech_portuguese', split='train[:10%]')
@@ -46,3 +48,5 @@ def dataset_to_jsonl(dataset, file_name):
 dataset_to_jsonl(datasets['train'], 'train.jsonl')
 
 dataset_to_jsonl(datasets['test'], 'validation.jsonl')
+
+os.environ['OPENAI_API_KEY'] = "sua_chave_aqui"
