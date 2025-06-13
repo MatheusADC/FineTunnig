@@ -68,3 +68,17 @@ client.fine_tuning.jobs.create(
     validation_file='id_retornado_pelo_validation_comeca_com_file-',
     model='gpt-3.5-turbo-0125'
 )
+
+# Construção do Objeto para AWS Bedrock
+def dataset_to_jsonlAWS(dataset, file_name):
+    with open(file_name, 'w', encoding='utf-8') as f:
+        for example in dataset:
+            json_obj = {
+                "prompt": example['text'],
+                "completion": example['label_text']
+            }
+            f.write(json.dumps(json_obj, ensure_ascii=False)+ '\n')
+
+dataset_to_jsonlAWS(datasets['train'], 'train.jsonl')
+
+dataset_to_jsonlAWS(datasets['test'], 'validation.jsonl')
